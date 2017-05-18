@@ -1,0 +1,70 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+rift.dSYM/Contents/Info.plist
+
+rift.dSYM/Contents/Resources/DWARF/rift
+
+rift
+
+*.h#
+
+.#*
+
+#*
+build/
+
+cmake_install.cmake
+
+CMakeCache.txt
+
+*.bin
+
+*.check_cache
+
+*.log
+
+CMakeFiles
+
+*.marks
+
+Makefile
+
+.clang_complete
+.ninja_deps
+.ninja_log
+*.swp
+massif.out*
+perf.data
+
+local/cmake.cmake
+.vscode/*
+
+export
+.ycm_extra_conf.py

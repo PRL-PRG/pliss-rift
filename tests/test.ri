@@ -1,0 +1,21 @@
+a<-1
+b<-2
+a+b
+f1 <- function() { 1 }
+
+f2 <- function(x) { f1()  }
+
+y <- c(1,2,3)
+
+x <- function() {c(33,1,2,3)}
+
+x()+x()
+
+y*y
+
+s <- "hi ho"
+
+s[1]
+
+y[2]
+ 
