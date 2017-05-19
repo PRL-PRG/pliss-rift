@@ -5,7 +5,7 @@
 
 
 /** Shorthand for calling runtime functions.  */
-#define RUNTIME_CALL(NAME, ...) b->CreateCall(NAME(m.get()), std::vector<llvm::Value*>({ __VA_ARGS__ }), "")
+#define RUNTIME_CALL(NAME, ...) b->CreateCall(NAME(m.get()), vector<llvm::Value*>({ __VA_ARGS__ }), "")
 
 namespace {
 
@@ -59,7 +59,7 @@ int Compiler::compile(ast::Fun * node) {
 
     // TODO: return something else than returning 0
     result = b->CreateCall(doubleVectorLiteral,
-            std::vector<llvm::Value*>(
+            vector<llvm::Value*>(
                 {llvm::ConstantFP::get(context(), llvm::APFloat(0.0f))}), "");
 
     // Append return instruction of the last used value
