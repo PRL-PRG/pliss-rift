@@ -67,8 +67,6 @@ namespace rift {
 
 
     void tests() {
-        // TODO implement a compiler
-        return;
 
         cout << "Running tests..." << endl;
         TEST("1", 1);
@@ -125,8 +123,6 @@ namespace rift {
         TEST("length(\"aba\")", 3);
         TEST("length(\"\")", 0);
 
-        // TODO implement if
-        return;
 
         TEST("a = 1 if (a) { 1 } else { 2 }", 1);
         TEST("a = 1 b = 1 if (a) { b = 2 } b", 2);

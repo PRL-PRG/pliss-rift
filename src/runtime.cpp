@@ -56,8 +56,15 @@ double doubleGetSingleElement(DoubleVector * from, double index) {
 }
 
 RVal * doubleGetElement(DoubleVector * from, DoubleVector * index) {
-    // TODO
-    assert(false);
+    unsigned resultSize = index->size;
+    DoubleVector* result = DoubleVector::New(resultSize);
+    for (unsigned i = 0; i < resultSize; ++i) {
+        double idx = (*index)[i];
+        if (idx < 0 or idx >= from->size)
+            throw "Index out of bounds";
+        (*result)[i] = (*from)[static_cast<int>(idx)];
+    }
+    return result;
 }
 
 RVal * characterGetElement(CharacterVector * from, DoubleVector * index) {
@@ -154,17 +161,21 @@ RVal * genericAdd(RVal * lhs, RVal * rhs) {
 }
 
 RVal * doubleSub(DoubleVector * lhs, DoubleVector * rhs) {
-    // TODO
-    assert(false);
-    return nullptr;
+    int resultSize = max(lhs->size, rhs->size);
+    DoubleVector* result = DoubleVector::New(resultSize);
+    for (int i = 0; i < resultSize; ++i)
+        (*result)[i] = (*lhs)[i % lhs->size] - (*rhs)[i % rhs->size];
+    return result;
 }
 
 
 
 RVal * genericSub(RVal * lhs, RVal * rhs) {
-    // TODO
-    assert(false);
-    return nullptr;
+    auto l = DoubleVector::Cast(lhs);
+    auto r = DoubleVector::Cast(rhs);
+    if (!(l && r))
+        throw "Invalid types for binary sub";
+    return doubleSub(l, r);
 }
 
 RVal * doubleMul(DoubleVector * lhs, DoubleVector * rhs) {
