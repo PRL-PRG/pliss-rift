@@ -217,7 +217,8 @@ void Compiler::visit(ast::Index * n) {
 
 /** Assign a variable. */
 void Compiler::visit(ast::SimpleAssignment * n) {
-    assert(false);
+    n->rhs->accept(this);
+    RUNTIME_CALL(envSet, cur.env, fromInt(n->name->symbol), result);
 }
 
 /** Assign into a vector at an index. */
