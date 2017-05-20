@@ -61,12 +61,16 @@ public:
         n->rhs->accept(this);
     }
     void printArgs(Call * n) {
-        // TODO
-        assert(false);
+        s << "(";
+        for (Exp * v : n->args) {
+            v->accept(this);
+            s << ", ";
+        }
+        s << ")";
     }
     void visit(UserCall * n) override {
-        // TODO
-        assert(false);
+        n->name->accept(this);
+        printArgs(n);
     }
     void visit(CCall * n) override {
         s << "c";
