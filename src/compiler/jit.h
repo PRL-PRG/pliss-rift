@@ -8,6 +8,10 @@
 #include "runtime.h"
 #include "rift.h"
 
+#include "specializedRuntime.h"
+#include "type_analysis.h"
+#include "specialize.h"
+#include "die.h"
 
 namespace rift {
 /** A just in time compiler using LLVM. The main entry point is
@@ -142,6 +146,25 @@ RUNTIME_FUNCTIONS
     /** Optimize on the bitcode before native code generation. TypeAnalysis, 
         Unboxing and BoxingRemoval are Rift passes, the rest is from LLVM.   */
     static void optimizeModule(llvm::Module * m) {
+        auto pm = unique_ptr<llvm::legacy::FunctionPassManager>
+                           (new llvm::legacy::FunctionPassManager(m));
+        pm->add(new TypeAnalysis());
+        pm->add(new Specialize());
+        pm->add(new DeadInstructionElimination());
+        // Optimize each function of this module
+        for (llvm::Function & f : *m) {
+            if (not f.empty()) {
+                if (DEBUG) {
+                    cout << "After translation to bitcode: -------------------------------" << endl;
+                    f.dump();
+                }
+                pm->run(f);
+                if (DEBUG) {
+                    cout << "After all passes: --------------------------" << endl;
+                    f.dump();
+                }
+            }
+        }
     }
 
     /** Return the one and only JIT object */

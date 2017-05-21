@@ -30,8 +30,30 @@
     FUN(genericEval, type::v_ev) \
     FUN_PURE(c, type::v_iVA)
 
-#define RUNTIME_FUNCTIONS GENERIC_RUNTIME_FUNCTIONS
 
+#define RUNTIME_FUNCTIONS \
+    GENERIC_RUNTIME_FUNCTIONS \
+    FUN_PURE(doubleGetSingleElement, type::d_dvd) \
+    FUN_PURE(doubleGetElement, type::v_dvdv) \
+    FUN_PURE(characterGetElement, type::v_cvdv) \
+    FUN(doubleSetElement, type::void_dvdvdv) \
+    FUN(scalarSetElement, type::void_dvdd) \
+    FUN(characterSetElement, type::void_cvdvcv) \
+    FUN_PURE(doubleAdd, type::v_dvdv) \
+    FUN_PURE(characterAdd, type::v_cvcv) \
+    FUN_PURE(doubleSub, type::v_dvdv) \
+    FUN_PURE(doubleMul, type::v_dvdv) \
+    FUN_PURE(doubleDiv, type::v_dvdv) \
+    FUN_PURE(doubleEq, type::v_dvdv) \
+    FUN_PURE(doubleNeq, type::v_dvdv) \
+    FUN_PURE(characterEq, type::v_cvcv) \
+    FUN_PURE(characterNeq, type::v_cvcv) \
+    FUN_PURE(doubleLt, type::v_dvdv) \
+    FUN_PURE(doubleGt, type::v_dvdv) \
+    FUN_PURE(doublec, type::v_iVA) \
+    FUN_PURE(characterc, type::v_iVA) \
+    FUN(characterEval, type::v_ecv) \
+    FUN_PURE(scalarFromVector, type::d_dv)
 
 /** Functions are defined "extern C" to avoid exposing C++ name mangling to
     LLVM. Dealing with C++ would make the compiler less readable.
