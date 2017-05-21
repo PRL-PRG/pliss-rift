@@ -173,8 +173,15 @@ void Compiler::visit(ast::BinExp * n) {
 
 /** Rift Function Call. First obtain the function pointer, then arguments. */
 void Compiler::visit(ast::UserCall * n) {
-    //TODO
-    assert(false);
+    n->name->accept(this);
+    vector<Value *> args;
+    args.push_back(result);
+    args.push_back(fromInt(n->args.size()));
+    for (ast::Exp * arg : n->args) {
+        arg->accept(this);
+        args.push_back(result);
+    }
+    result = cur.b->CreateCall(call(m.get()), args, "");
 }
 
 /** Call length runtime, box the scalar result  */
@@ -245,8 +252,25 @@ void Compiler::visit(ast::IfElse * n) {
             context(), "afterIf", cur.f, nullptr);
     Value * trueResult;
     Value * falseResult;
-    //TODO
-    assert(false);
+    // compile the condition
+    n->guard->accept(this);
+    Value * guard = RUNTIME_CALL(toBoolean, result);
+    // do the conditional jump
+    cur.b->CreateCondBr(guard, ifTrue, ifFalse);
+    // flip the basic block to ifTrue, compile the true case and jump to
+    // the merge block at the end
+    cur.b->SetInsertPoint(ifTrue);
+    n->ifClause->accept(this);
+    trueResult = result;
+    ifTrue = cur.b->GetInsertBlock();
+    cur.b->CreateBr(merge);
+    // flip the basic block to ifFalse, compile the else case and jump to
+    // the merge block at the end
+    cur.b->SetInsertPoint(ifFalse);
+    n->elseClause->accept(this);
+    falseResult = result;
+    ifFalse = cur.b->GetInsertBlock();
+    cur.b->CreateBr(merge);
     // Set BB to merge point and emit a phi n for the then-else results
     cur.b->SetInsertPoint(merge);
     auto phi = cur.b->CreatePHI(type::ptrValue, 2, "ifPhi");
